@@ -15,7 +15,10 @@ setup(
         "rich",
         "langchain-core",
         "langchain-openai",
-        "langchain-ollama"
+        "langchain-ollama",
+        "langchain-anthropic",
+        "langchain-mistralai",
+        "langchain-google-genai"
     ],
     entry_points={
         "console_scripts": [

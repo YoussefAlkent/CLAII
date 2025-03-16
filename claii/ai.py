@@ -6,61 +6,54 @@ from langchain_core.prompts import PromptTemplate
 from claii.config import load_config
 from claii.utils import is_ollama_installed, is_openai_configured 
 from claii.history import log_history
-
-
-SHORT_ANSWER_PROMPT = PromptTemplate(
-    input_variables=["query"],
-    template=(
-        "You are a concise assistant. Answer the following query in as little words as possible. "
-        "If the user asks for a command, return only the command itself without extra explanation. "
-        "You should not include any english words in your response if possible. "
-        "You must always use a posix compliant command. you can assume that the user has the necessary permissions to run the command. "
-        "if the command requires a specific file, you can assume that the file exists. "
-        "if the command requires a specific binary, instruct the user to install the necessary package. "
-        "you must always return a command that is safe to run. "
-        "you must always assume the user does not have any binaries installed. "
-        "do not add any characters to the command that are not necessary. "
-        "Query: {query}"
-    ),
-)
+import requests
+from claii.models.openai import chat_openai
+from claii.models.ollama import chat_ollama
+from claii.models.mistral import chat_mistral
+from claii.models.perplexity import chat_perplexity
+from claii.models.gemini import chat_gemini
+from claii.models.deepseek import chat_deepseek
 
 
 console = Console()
 
-def chat_ollama(message: str, model: str):
-    """Chat with a local Ollama model using LangChain"""
-    llm = ChatOllama(model=model)
-    formatted_prompt = SHORT_ANSWER_PROMPT.format(query=message)  # Apply prompt template
-    response = llm.invoke(formatted_prompt)
-    log_history(message, response.content.strip())
-    return response.content.strip()
-
-def chat_openai(message: str):
-    """Chat with OpenAI API using LangChain"""
-    config = load_config()
-    api_key = config.get("openai_api_key")
-    if not api_key:
-        console.print("[red]API key not set! Use `ai set-key <your_key>`[/red]")
-        return {}
-
-    llm = OpenAI(api_key=api_key, model="gpt-4-turbo")
-    formatted_prompt = SHORT_ANSWER_PROMPT.format(query=message)  # Apply prompt template
-    reply = llm.invoke(formatted_prompt).content.strip()
-    log_history(message, reply)
-    return reply
-
-
 def chat(message: str, tool: str = "auto"):
-    """Select AI tool and chat"""
+    """Select AI tool dynamically and chat based on user preferences or system availability."""
     config = load_config()
-    ollama_model = config.get("ollama_model", "mistral")
 
+    # Load models from config
+    ollama_model = config.get("ollama_model", "mistral")
+    openai_model = config.get("openai_model", "gpt-4")
+    deepseek_model = config.get("deepseek_model", "deepseek-chat")
+    perplexity_model = config.get("perplexity_model", "pplx-7b-chat")
+    mistral_model = config.get("mistral_model", "mistral-medium")
+    gemini_model = config.get("gemini_model", "gemini-pro")
+
+    # AI model selection logic
     if tool == "ollama" or (tool == "auto" and is_ollama_installed()):
         console.print(f"[yellow]Using Ollama ({ollama_model})[/yellow]")
         return chat_ollama(message, ollama_model)
+    
     elif tool == "openai" or (tool == "auto" and is_openai_configured()):
-        console.print("[yellow]Using OpenAI API[/yellow]")
+        console.print(f"[yellow]Using OpenAI ({openai_model})[/yellow]")
         return chat_openai(message)
+    
+    elif tool == "deepseek" or tool == "auto":
+        console.print(f"[yellow]Using DeepSeek ({deepseek_model})[/yellow]")
+        return chat_deepseek(message)
+    
+    elif tool == "perplexity" or tool == "auto":
+        console.print(f"[yellow]Using Perplexity ({perplexity_model})[/yellow]")
+        return chat_perplexity(message)
+    
+    elif tool == "mistral" or tool == "auto":
+        console.print(f"[yellow]Using Mistral ({mistral_model})[/yellow]")
+        return chat_mistral(message)
+    
+    elif tool == "gemini" or tool == "auto":
+        console.print(f"[yellow]Using Gemini ({gemini_model})[/yellow]")
+        return chat_gemini(message)
+
     else:
-        console.print("[red]No AI tools available![/red]")
+        console.print("[red]No AI tools available or invalid selection![/red]")
         return None

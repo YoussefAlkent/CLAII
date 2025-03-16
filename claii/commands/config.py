@@ -22,30 +22,44 @@ def set_model(model: str = "mistral"):
     console.print(f"[green]Ollama model set to '{model}'[/green]")
 
 @app.command()
-def set(param: str, value: str):
-    """Set various configuration options (key, model, tool)"""
+def set(param: str, provider: str, value: str):
+    """Set various configuration options (API keys, models, tools)"""
+
     valid_params = ["key", "model", "tool"]
+    valid_providers = ["openai", "deepseek", "perplexity", "mistral", "gemini", "ollama"]
 
     if param not in valid_params:
         console.print(f"[red]Invalid parameter! Choose from {', '.join(valid_params)}[/red]")
         raise typer.Exit()
 
+    if provider not in valid_providers:
+        console.print(f"[red]Invalid provider! Choose from {', '.join(valid_providers)}[/red]")
+        raise typer.Exit()
+    
+    if param == "key" and provider == "ollama":
+        console.print("[red]Ollama API key is not required! Use `claii set model ollama <model>` instead[/red]")
+        raise typer.Exit()
+
     config = load_config()
 
     if param == "key":
-        config["openai_api_key"] = value
-        console.print("[green]OpenAI API key set successfully![/green]")
+        config[f"{provider}_api_key"] = value
+        console.print(f"[green]{provider.capitalize()} API key set successfully![/green]")
 
     elif param == "model":
-        config["ollama_model"] = value
-        console.print(f"[green]Ollama model set to '{value}'[/green]")
+        config[f"{provider}_model"] = value
+        console.print(f"[green]{provider.capitalize()} model set to '{value}'[/green]")
 
     elif param == "tool":
-        if value not in ["ollama", "openai"]:
-            console.print("[red]Invalid option! Choose either 'ollama' or 'openai'.[/red]")
-            raise typer.Exit()
-        config["default_tool"] = value
-        console.print(f"[green]Default AI tool set to '{value}'[/green]")
+        config["default_tool"] = provider
+        console.print(f"[green]Default AI tool set to '{provider}'[/green]")
+
+    else:
+        console.print("[red]Invalid configuration option")
+        raise typer.Exit()
+
+    save_config(config)
+
 
 @app.command()
 def get():

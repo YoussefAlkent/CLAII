@@ -15,6 +15,9 @@ Requires-Dist: rich
 Requires-Dist: langchain-core
 Requires-Dist: langchain-openai
 Requires-Dist: langchain-ollama
+Requires-Dist: langchain-anthropic
+Requires-Dist: langchain-mistralai
+Requires-Dist: langchain-google-genai
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier

@@ -3,3 +3,6 @@ rich
 langchain-core
 langchain-openai
 langchain-ollama
+langchain-anthropic
+langchain-mistralai
+langchain-google-genai
