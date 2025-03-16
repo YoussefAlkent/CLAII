@@ -1,48 +1,129 @@
-# CLAII - Command Line Artifical Intelligence Interface
-Shell commands can be annoying to memorise and use, CLAII is here to help you generate your commands without a hassle! Free, Self-hosted, and supports multiple APIs so you can use the model you want!
+# **CLAII - Command Line Artificial Intelligence Interface**  
 
-## Implemented APIs
-[y] Ollama
-[y] OpenAI
-[ ] DeepSeek (Soon)
-[ ] Perplexity (Soon)
-[ ] Mistral (Soon)
-[ ] Gemini (Soon)
+Shell commands can be **frustrating to memorize and use**—**CLAII** is here to help!  
+Generate, refine, and **execute** commands **effortlessly** with free, **self-hosted AI**.  
 
-## How to install
-Coming soon
+✅ **Fast & Lightweight**  
+✅ **Self-Hosted** (Ollama support)  
+✅ **Supports Multiple AI APIs**  
 
-## How to use
-After installation, you need to set a few parameters:
+---
+
+## **Implemented AI Models**  
+
+CLAII supports **all major AI APIs**, so you can choose the best model for your needs:  
+
+| Model       | Status    | Notes |
+|-------------|----------|--------|
+| **Ollama**  | ✅ Supported | Local & self-hosted |
+| **OpenAI**  | ✅ Supported | Requires API key |
+| **DeepSeek** | ✅ Supported | Requires API key |
+| **Perplexity** | ✅ Supported | Requires API key |
+| **Mistral** | ✅ Supported | Requires API key |
+| **Gemini** | ✅ Supported | Requires API key |
+
+---
+
+## **How CLAII Works**  
+
+CLAII allows you to:  
+
+1. **Generate shell commands** from natural language.  
+2. **Refine commands** with AI assistance.  
+3. **Execute commands directly** (optional).  
+
+### **Example Usage**  
 
 ```bash
-$ claii set tool (ollama|openai|deepseek|perplexity|mistral|gemini)
+claii chat "Create a React project with Vite and Tailwind"
 ```
 
-Then you need to add your key, skip this step if you're using ollama:
+#### **Example Output**  
 
 ```bash
-$ claii set key (openai|deepseek|perplexity|mistral|gemini) <key-xxxxx...>
-```
-
-If you're using ollama, then set your model:
-
-```bash
-$ claii set model "modelname"
-```
-
-and now you can start to generate your commands!
-```bash
-$ claii chat "Make a new directory structure for a react project"
-
 Using Ollama (qwen2.5-coder:1.5b)
-AI: pip install -r requirements.txt && python app
+AI: npm create vite@latest my-app && cd my-app && npm install tailwindcss postcss autoprefixer && npx tailwindcss init -p
 ```
-you can also directly run your commands!
-```bash
-$ claii chat "Make a new directory structure for a react project" --run
 
+### **Run the Command Automatically**  
+
+```bash
+claii chat "Create a React project with Vite and Tailwind" --run
+```
+
+#### **Example Output**  
+
+```bash
 Using Ollama (qwen2.5-coder:1.5b)
-AI: pip install -r requirements.txt && python app
+AI: npm create vite@latest my-app && cd my-app && npm install tailwindcss postcss autoprefixer && npx tailwindcss init -p
 Executing command...
 ```
+
+---
+
+## **Installation**  
+
+### **📥 Method 1: Download the Wheel File (Recommended)**  
+Download the latest **`.whl`** file from [GitHub Releases](https://github.com/YoussefAlkentclaii/releases) and install it using:  
+
+```bash
+pip install path/to/claii-x.x.x-py3-none-any.whl
+```
+
+### **📦 Method 2: Install from PyPI (Coming Soon)**  
+Once available, install CLAII directly from PyPI:  
+
+```bash
+pip install claii
+```
+
+### **🎩 Method 3: Install from the AUR (Coming Soon)**  
+For **Arch Linux** users, an **AUR package** will be available soon.
+
+---
+
+## **Configuration**  
+
+Before using CLAII, set up your preferred AI tool.  
+
+### **1️⃣ Select Your AI Tool**  
+
+```bash
+claii set tool (ollama|openai|deepseek|perplexity|mistral|gemini)
+```
+
+### **2️⃣ Set Your API Key (If Required)**  
+
+If you’re **not** using Ollama, you **must** provide an API key:  
+
+```bash
+claii set key (openai|deepseek|perplexity|mistral|gemini) <your_api_key>
+```
+
+### **3️⃣ Set Your Ollama Model (If Using Ollama)**  
+
+If using Ollama, specify your **local model**:  
+
+```bash
+claii set model "mistral"
+```
+
+---
+
+## **Features & Roadmap**  
+
+| Feature                 | Status    | Notes |
+|-------------------------|----------|--------|
+| **Generate shell commands** | ✅ Done | Works with all supported models |
+| **Refine existing commands** | ✅ Done | AI improves or corrects commands |
+| **Run commands automatically** | ✅ Done | Use `--run` flag to execute |
+| **Support for DeepSeek AI** | ✅ Done | Requires API key |
+| **Support for Perplexity AI** | ✅ Done | Requires API key |
+| **Support for Mistral AI** | ✅ Done | Requires API key |
+| **Support for Gemini AI** | ✅ Done | Requires API key |
+| **AUR Package** | 🔜 Coming Soon | Arch Linux package |
+| **PyPI Release** | 🔜 Coming Soon | Install via `pip install claii` |
+
+---
+
+### 🚀 **CLAII makes shell commands effortless!** 🚀  
