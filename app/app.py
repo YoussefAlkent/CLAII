@@ -4,18 +4,44 @@ from asyncio.log import logger
 import typer
 import os
 import json
+import subprocess
 from rich.console import Console
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import OpenAI
 from langchain_ollama import ChatOllama
+from langchain_core.prompts import PromptTemplate
 
 console = Console()
 app = typer.Typer()
 
-CONFIG_PATH = os.path.expanduser("~/.ai-cli-config.json")
+CONFIG_DIR = os.path.expanduser("~/.config/CLAII/")
+CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
+HISTORY_PATH = os.path.expanduser("~/.ai-cli-history.log")
+
+
+SHORT_ANSWER_PROMPT = PromptTemplate(
+    input_variables=["query"],
+    template=(
+        "You are a concise assistant. Answer the following query in as little words as possible. "
+        "If the user asks for a command, return only the command itself without extra explanation. "
+        "You should not include any english words in your response if possible. "
+        "You must always use a posix compliant command. you can assume that the user has the necessary permissions to run the command. "
+        "if the command requires a specific file, you can assume that the file exists. "
+        "if the command requires a specific binary, instruct the user to install the necessary package. "
+        "you must always return a command that is safe to run. "
+        "you must always assume the user does not have any binaries installed. "
+        "do not add any characters to the command that are not necessary. "
+        "Query: {query}"
+    ),
+)
+
+def ensure_config_dir():
+    """Ensure that the configuration directory exists."""
+    os.makedirs(CONFIG_DIR, exist_ok=True)
 
 def load_config():
     """Load configuration file"""
+    ensure_config_dir()
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, "r") as f:
             return json.load(f)
@@ -23,6 +49,7 @@ def load_config():
 
 def save_config(config):
     """Save configuration to file"""
+    ensure_config_dir()
     with open(CONFIG_PATH, "w") as f:
         json.dump(config, f, indent=4)
 
@@ -34,6 +61,11 @@ def is_openai_configured():
     """Check if OpenAI API key is set"""
     config = load_config()
     return bool(config.get("openai_api_key"))
+
+def log_history(message: str, reply: str):
+    """Log the AI conversation to a history file"""
+    with open(HISTORY_PATH, "a") as f:
+        f.write(f"Q: {message}\nA: {reply}\n---\n")
 
 @app.command()
 def tools():
@@ -67,14 +99,10 @@ def set_model(model: str = "mistral"):
 def chat_ollama(message: str, model: str):
     """Chat with a local Ollama model using LangChain"""
     llm = ChatOllama(model=model)
-    response = llm.invoke(message)
+    formatted_prompt = SHORT_ANSWER_PROMPT.format(query=message)  # Apply prompt template
+    response = llm.invoke(formatted_prompt)
     return response.content.strip()
-    # content = response.get("content", "").strip()
-    # if content:
-    #     return content
-    # else:
-    #     logger.error("No response from Ollama!")
-    #     return "I'm sorry, I couldn't understand that."
+
 
 def chat_openai(message: str):
     """Chat with OpenAI API using LangChain"""
@@ -85,10 +113,11 @@ def chat_openai(message: str):
         raise typer.Exit()
 
     llm = OpenAI(api_key=api_key, model="gpt-4-turbo")
-    return llm.invoke(message)
+    formatted_prompt = SHORT_ANSWER_PROMPT.format(query=message)  # Apply prompt template
+    return llm.invoke(formatted_prompt).content.strip()
 
 @app.command()
-def chat(message: str, tool: str = "auto"):
+def chat(message: str, tool: str = "auto", run: bool = False):
     """Send message to AI (auto-detect tool, or choose OpenAI/Ollama)"""
     config = load_config()
     ollama_model = config.get("ollama_model", "mistral")
@@ -105,6 +134,26 @@ def chat(message: str, tool: str = "auto"):
 
     if reply:
         console.print(f"[cyan]AI:[/cyan] {reply}")
+        log_history(message, reply)
+    
+    if run:
+        try:
+            console.print("[green]Executing command...[/green]")
+            subprocess.run(reply, shell=True, check=True)
+        except subprocess.CalledProcessError as e:
+            console.print(f"[red]Error running command:[/red] {e}")
+            
+@app.command()
+def history():
+    """Show previous AI conversations"""
+    if not os.path.exists(HISTORY_PATH):
+        console.print("[yellow]No history found.[/yellow]")
+        return
+    with open(HISTORY_PATH, "r") as f:
+        console.print(f.read())
+
+
+
 
 if __name__ == "__main__":
     app()
