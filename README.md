@@ -9,7 +9,7 @@ Generate, refine, and **execute** commands **effortlessly** with free, **self-ho
 
 ---
 
-## **Implemented AI Models**  
+## **All the APIs you need!**  
 
 CLAII supports **all major AI APIs**, so you can choose the best model for your needs:  
 
@@ -89,7 +89,7 @@ Before using CLAII, set up your preferred AI tool.
 ### **1️⃣ Select Your AI Tool**  
 
 ```bash
-claii set tool (ollama|openai|deepseek|perplexity|mistral|gemini)
+claii config set tool (ollama|openai|deepseek|perplexity|mistral|gemini)
 ```
 
 ### **2️⃣ Set Your API Key (If Required)**  
@@ -97,7 +97,7 @@ claii set tool (ollama|openai|deepseek|perplexity|mistral|gemini)
 If you’re **not** using Ollama, you **must** provide an API key:  
 
 ```bash
-claii set key (openai|deepseek|perplexity|mistral|gemini) <your_api_key>
+claii config set key (openai|deepseek|perplexity|mistral|gemini) <your_api_key>
 ```
 
 ### **3️⃣ Set Your Ollama Model (If Using Ollama)**  
@@ -105,7 +105,7 @@ claii set key (openai|deepseek|perplexity|mistral|gemini) <your_api_key>
 If using Ollama, specify your **local model**:  
 
 ```bash
-claii set model "mistral"
+claii config set model "mistral"
 ```
 
 ---
