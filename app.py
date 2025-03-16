@@ -117,15 +117,83 @@ def chat_openai(message: str):
     return llm.invoke(formatted_prompt).content.strip()
 
 @app.command()
-def chat(message: str, tool: str = "auto", run: bool = False):
+def set_default_tool(tool: str):
+    """Set the default AI tool (ollama or openai)"""
+    if tool not in ["ollama", "openai"]:
+        console.print("[red]Invalid option! Choose either 'ollama' or 'openai'.[/red]")
+        raise typer.Exit()
+
+    config = load_config()
+    config["default_tool"] = tool
+    save_config(config)
+    console.print(f"[green]Default AI tool set to '{tool}'[/green]")
+
+@app.command()
+def get(param: str):
+    """Retrieve configuration values (key, model, tool)"""
+    valid_params = ["key", "model", "tool", "all"]
+    if param not in valid_params:
+        console.print(f"[red]Invalid parameter! Choose from {', '.join(valid_params)}[/red]")
+        raise typer.Exit()
+
+    config = load_config()
+
+    if param == "key":
+        console.print(f"[yellow]OpenAI API Key:[/yellow] {'✅ Set' if config.get('openai_api_key') else '❌ Not Set'}")
+
+    elif param == "model":
+        console.print(f"[yellow]Ollama Model:[/yellow] {config.get('ollama_model', 'mistral')}")
+
+    elif param == "tool":
+        console.print(f"[yellow]Default AI Tool:[/yellow] {config.get('default_tool', 'auto')}")
+
+    elif param == "all":
+        console.print("\n[bold yellow]Current Configuration:[/bold yellow]")
+        console.print(f"🔹 OpenAI API Key: {'✅ Set' if config.get('openai_api_key') else '❌ Not Set'}")
+        console.print(f"🔹 Ollama Model: {config.get('ollama_model', 'mistral')}")
+        console.print(f"🔹 Default AI Tool: {config.get('default_tool', 'auto')}")
+
+
+@app.command()
+def set(param: str, value: str):
+    """Set various configuration options (key, model, tool)"""
+    valid_params = ["key", "model", "tool"]
+
+    if param not in valid_params:
+        console.print(f"[red]Invalid parameter! Choose from {', '.join(valid_params)}[/red]")
+        raise typer.Exit()
+
+    config = load_config()
+
+    if param == "key":
+        config["openai_api_key"] = value
+        console.print("[green]OpenAI API key set successfully![/green]")
+
+    elif param == "model":
+        config["ollama_model"] = value
+        console.print(f"[green]Ollama model set to '{value}'[/green]")
+
+    elif param == "tool":
+        if value not in ["ollama", "openai"]:
+            console.print("[red]Invalid option! Choose either 'ollama' or 'openai'.[/red]")
+            raise typer.Exit()
+        config["default_tool"] = value
+        console.print(f"[green]Default AI tool set to '{value}'[/green]")
+
+    save_config(config)
+
+@app.command()
+def chat(message: str, tool: str = 'ollama', run: bool = False):
     """Send message to AI (auto-detect tool, or choose OpenAI/Ollama)"""
     config = load_config()
     ollama_model = config.get("ollama_model", "mistral")
+    default_tool = config.get("default_tool", "ollama") 
 
-    if tool == "ollama" or (tool == "auto" and is_ollama_installed()):
+    tool = tool or default_tool
+    if tool == "ollama" and is_ollama_installed():
         console.print(f"[yellow]Using Ollama ({ollama_model})[/yellow]")
         reply = chat_ollama(message, ollama_model)
-    elif tool == "openai" or (tool == "auto" and is_openai_configured()):
+    elif tool == "openai" and is_openai_configured():
         console.print("[yellow]Using OpenAI API[/yellow]")
         reply = chat_openai(message)
     else:
@@ -142,7 +210,7 @@ def chat(message: str, tool: str = "auto", run: bool = False):
             subprocess.run(reply, shell=True, check=True)
         except subprocess.CalledProcessError as e:
             console.print(f"[red]Error running command:[/red] {e}")
-            
+
 @app.command()
 def history():
     """Show previous AI conversations"""
