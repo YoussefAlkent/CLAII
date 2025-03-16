@@ -1,5 +1,0 @@
-typer
-rich
-langchain-core
-langchain-openai
-langchain-ollama
