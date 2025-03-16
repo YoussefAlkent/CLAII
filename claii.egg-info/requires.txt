@@ -1,5 +1,7 @@
 typer
 rich
+pytest
+pytest-mock
 langchain-core
 langchain-openai
 langchain-ollama

@@ -29,6 +29,7 @@ claii/models/openai.py
 claii/models/perplexity.py
 claii/prompts/__init__.py
 claii/prompts/concise.py
+tests/__init__.py
 tests/test_ai.py
 tests/test_cli.py
 tests/test_config.py

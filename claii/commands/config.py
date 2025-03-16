@@ -61,7 +61,7 @@ def set(param: str, provider: str, value: str):
     save_config(config)
 
 
-@app.command()
+@app.command("get-all")
 def get():
     """Show current configuration"""
     config = load_config()

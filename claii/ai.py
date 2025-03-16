@@ -4,7 +4,6 @@ from langchain_openai import OpenAI
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import PromptTemplate
 from claii.config import load_config
-from claii.utils import is_ollama_installed, is_openai_configured 
 from claii.history import log_history
 import requests
 from claii.models.openai import chat_openai
@@ -30,11 +29,11 @@ def chat(message: str, tool: str = "auto"):
     gemini_model = config.get("gemini_model", "gemini-pro")
 
     # AI model selection logic
-    if tool == "ollama" or (tool == "auto" and is_ollama_installed()):
+    if tool == "ollama" or (tool == "auto"):
         console.print(f"[yellow]Using Ollama ({ollama_model})[/yellow]")
         return chat_ollama(message, ollama_model)
     
-    elif tool == "openai" or (tool == "auto" and is_openai_configured()):
+    elif tool == "openai" or (tool == "auto"):
         console.print(f"[yellow]Using OpenAI ({openai_model})[/yellow]")
         return chat_openai(message)
     

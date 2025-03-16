@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="claii",
-    version="0.0.2",
+    version="0.0.3",
     author="YoussefAlkent",
     author_email="youssefalkent@gmail.com",
     description="Command Line Artificial Intelligence Interface, an AI for your CLI.",
@@ -13,12 +13,15 @@ setup(
     install_requires=[
         "typer",
         "rich",
+        "pytest",
+        "pytest-mock",
         "langchain-core",
         "langchain-openai",
         "langchain-ollama",
         "langchain-anthropic",
         "langchain-mistralai",
-        "langchain-google-genai"
+        "langchain-google-genai",
+
     ],
     entry_points={
         "console_scripts": [
