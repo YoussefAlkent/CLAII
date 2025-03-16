@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="claii",
-    version="0.0.1",
+    version="0.0.2",
     author="YoussefAlkent",
     author_email="youssefalkent@gmail.com",
     description="Command Line Artificial Intelligence Interface, an AI for your CLI.",
