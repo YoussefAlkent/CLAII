@@ -1,8 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="claai",
-    version="0.1.0",
+    name="claii",
+    version="0.0.1",
+    author="YoussefAlkent",
+    author_email="youssefalkent@gmail.com",
+    description="Command Line Artificial Intelligence Interface, an AI for your CLI.",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/YoussefAlkent/CLAII",
     packages=find_packages(),
     install_requires=[
         "typer",
@@ -13,7 +19,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "claai=claai.cli:app",  # CLI entry point
+            "claii=claii.app:app",  # CLI entry point
         ],
     },
     classifiers=[

@@ -1,2 +1,10 @@
 appold.py
 app.py
+dist/
+claii.egg-info/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pyzw
