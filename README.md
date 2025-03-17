@@ -197,6 +197,9 @@ For more information on using and creating plugins, see:
 - [Full Plugin Documentation](claii/docs/plugins.md)
 - [Example Plugins](claii/docs/examples/plugins/)
 
+### **Contributers**
+- @AdhamAfis for his incredible work on the plugin system.
+
 ## **License**
 
 MIT
