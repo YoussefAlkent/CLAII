@@ -122,7 +122,7 @@ claii config set model "mistral"
 | **Support for Mistral AI** | ✅ Done | Requires API key |
 | **Support for Gemini AI** | ✅ Done | Requires API key |
 | **AUR Package** | 🔜 Coming Soon | Arch Linux package |
-| **PyPI Release** | 🔜 Coming Soon | Install via `pip install claii` |
+| **PyPI Release** | ✅ Done | Install via `pip install claii-ai` |
 
 ---
 

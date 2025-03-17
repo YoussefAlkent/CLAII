@@ -1,7 +1,8 @@
 appold.py
 app.py
 dist/
-claii.egg-info/
+* "".egg-info/
+claii_ai.egg-info/
 *.pyc
 *.pyo
 *.pyd
