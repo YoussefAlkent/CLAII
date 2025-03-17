@@ -12,6 +12,7 @@ from claii.models.mistral import chat_mistral
 from claii.models.perplexity import chat_perplexity
 from claii.models.gemini import chat_gemini
 from claii.models.deepseek import chat_deepseek
+from claii.plugins.manager import plugin_manager
 
 
 console = Console()
@@ -27,6 +28,13 @@ def gen_reply(message: str, tool: str = "auto"):
     perplexity_model = config.get("perplexity_model", "pplx-7b-chat")
     mistral_model = config.get("mistral_model", "mistral-medium")
     gemini_model = config.get("gemini_model", "gemini-pro")
+    
+    # Check if we should use a plugin model first
+    if tool != "auto" and tool in plugin_manager.models:
+        model_handler = plugin_manager.get_model_handler(tool)
+        if model_handler:
+            console.print(f"[yellow]Using plugin model: {tool}[/yellow]")
+            return model_handler(message)
 
     # AI model selection logic
     if tool == "ollama" or (tool == "auto"):

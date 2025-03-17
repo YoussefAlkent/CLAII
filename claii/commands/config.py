@@ -24,7 +24,54 @@ def set_model(model: str = "mistral"):
 @app.command()
 def set(param: str, provider: str, value: str):
     """Set various configuration options (API keys, models, tools)"""
-
+    
+    # Handle plugin settings
+    if param.startswith("plugins."):
+        config = load_config()
+        
+        # Special case for plugins.settings.plugin_name format
+        if param.startswith("plugins.settings."):
+            parts = param.split(".")
+            if len(parts) == 3:  # plugins.settings.pluginname
+                plugin_name = parts[2]
+                
+                # Make sure plugins and settings structure exists
+                if "plugins" not in config:
+                    config["plugins"] = {}
+                if "settings" not in config["plugins"]:
+                    config["plugins"]["settings"] = {}
+                
+                # Convert string settings to dict if needed
+                if plugin_name in config["plugins"]["settings"] and not isinstance(config["plugins"]["settings"][plugin_name], dict):
+                    # We have a string value where we expect a dict, fix it
+                    old_value = config["plugins"]["settings"][plugin_name]
+                    config["plugins"]["settings"][plugin_name] = {}
+                
+                # Initialize plugin settings dict if needed
+                if plugin_name not in config["plugins"]["settings"]:
+                    config["plugins"]["settings"][plugin_name] = {}
+                
+                # Set the value in the plugin settings
+                config["plugins"]["settings"][plugin_name][provider] = value
+                
+                save_config(config)
+                console.print(f"[green]Plugin config '{plugin_name}.{provider}' set to '{value}'[/green]")
+                return
+        
+        # Handle other plugin paths
+        parts = param.split(".")
+        current = config
+        for i, part in enumerate(parts[:-1]):
+            if part not in current:
+                current[part] = {}
+            current = current[part]
+        
+        current[parts[-1]] = value
+        save_config(config)
+        console.print(f"[green]Config '{param}' set to '{value}'[/green]")
+        return
+    
+    # Handle regular settings
     valid_params = ["key", "model", "tool"]
     valid_providers = ["openai", "deepseek", "perplexity", "mistral", "gemini", "ollama"]
 
