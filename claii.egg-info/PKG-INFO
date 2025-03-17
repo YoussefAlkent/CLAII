@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: claii
-Version: 0.0.3
+Version: 0.1.0
 Summary: Command Line Artificial Intelligence Interface, an AI for your CLI.
 Home-page: https://github.com/YoussefAlkent/CLAII
 Author: YoussefAlkent
@@ -17,6 +17,7 @@ Requires-Dist: pytest-mock
 Requires-Dist: langchain-core
 Requires-Dist: langchain-openai
 Requires-Dist: langchain-ollama
+Requires-Dist: langchain-deepseek
 Requires-Dist: langchain-anthropic
 Requires-Dist: langchain-mistralai
 Requires-Dist: langchain-google-genai

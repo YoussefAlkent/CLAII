@@ -1,15 +1,15 @@
 import typer
 from rich.console import Console
-from claii.ai import chat
+from claii.ai import gen_reply
 import subprocess
 
 console = Console()
 app = typer.Typer()
 
 @app.command()
-def gen(text: str, tool: str = "auto", run: bool = False):
+def chat(text: str, tool: str = "auto", run: bool = False):
     """Send a message to AI"""
-    reply = chat(text, tool)
+    reply = gen_reply(text, tool)
     if reply:
         console.print(f"[cyan]AI:[/cyan] {reply}")
     

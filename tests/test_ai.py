@@ -1,5 +1,5 @@
 import pytest
-from claii.ai import chat
+from claii.ai import gen_reply
 from claii.utils import is_openai_configured
 from claii.models.openai import chat_openai
 
@@ -8,7 +8,7 @@ def test_chat_model_selection(mocker, tool):
     """Test AI model selection logic"""
     mocker.patch("claii.config.load_config", return_value={"tool":tool})
     mock_chat_function = mocker.patch(f"claii.models.{tool}.chat_{tool}", return_value="Mocked response")
-    response = chat("Hello world in bash", tool)
+    response = gen_reply("Hello world in bash", tool)
     assert response == "API key not set!"
     mock_chat_function.assert_called_once()
 

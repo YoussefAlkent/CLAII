@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="claii",
-    version="0.0.3",
+    version="0.1.0",
     author="YoussefAlkent",
     author_email="youssefalkent@gmail.com",
     description="Command Line Artificial Intelligence Interface, an AI for your CLI.",
@@ -18,9 +18,10 @@ setup(
         "langchain-core",
         "langchain-openai",
         "langchain-ollama",
+        "langchain-deepseek",
         "langchain-anthropic",
         "langchain-mistralai",
-        "langchain-google-genai",
+        "langchain-google-genai"
 
     ],
     entry_points={

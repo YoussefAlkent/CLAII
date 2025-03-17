@@ -16,7 +16,7 @@ from claii.models.deepseek import chat_deepseek
 
 console = Console()
 
-def chat(message: str, tool: str = "auto"):
+def gen_reply(message: str, tool: str = "auto"):
     """Select AI tool dynamically and chat based on user preferences or system availability."""
     config = load_config()
 

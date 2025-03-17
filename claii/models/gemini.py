@@ -3,7 +3,7 @@ from claii.history import log_history
 from claii.utils import is_openai_configured
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
-from claii.prompts.concise import SHORT_ANSWER_PROMPT
+from claii.prompts.concise import build_prompt
 from claii.utils import is_gemini_configured
 
 
@@ -19,7 +19,7 @@ def chat_gemini(message: str):
     api_key = config.get("gemini_api_key")
     model = config.get("gemini_model", "gemini-pro")
     llm = ChatGoogleGenerativeAI(api_key=api_key, model=model)
-    formatted_prompt = SHORT_ANSWER_PROMPT.format(query=message)
+    formatted_prompt = build_prompt(message)
     reply = llm.invoke([HumanMessage(content=formatted_prompt)]).content.strip()
     log_history(message, reply)
     return reply

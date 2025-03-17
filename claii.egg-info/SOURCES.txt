@@ -15,8 +15,8 @@ claii.egg-info/entry_points.txt
 claii.egg-info/requires.txt
 claii.egg-info/top_level.txt
 claii/commands/__init__.py
-claii/commands/chat.py
 claii/commands/config.py
+claii/commands/generate.py
 claii/commands/history.py
 claii/commands/system.py
 claii/commands/tools.py
