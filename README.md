@@ -94,7 +94,7 @@ claii config set tool (ollama|openai|deepseek|perplexity|mistral|gemini)
 
 ### **2️⃣ Set Your API Key (If Required)**  
 
-If you’re **not** using Ollama, you **must** provide an API key:  
+If you're **not** using Ollama, you **must** provide an API key:  
 
 ```bash
 claii config set key (openai|deepseek|perplexity|mistral|gemini) <your_api_key>
@@ -127,3 +127,76 @@ claii config set model "mistral"
 ---
 
 ### 🚀 **CLAII makes shell commands effortless!** 🚀  
+
+## **Features**
+
+- **Multi-model support**: Easily switch between different AI models (OpenAI, Ollama, Perplexity, Mistral, Gemini, DeepSeek)
+- **Plugin system**: Extend CLAII with custom commands, AI models, and tools
+- **Simple configuration**: Easy-to-use config commands for API keys and model selection
+- **Command system**: Well-organized command structure for different operations
+
+## **Usage**
+
+### **Basic Chat**
+
+```bash
+claii chat "Your message here"
+```
+
+### **Using a Specific AI Model**
+
+```bash
+claii chat "Your message here" --tool openai
+claii chat "Your message here" --tool ollama
+claii chat "Your message here" --tool mistral
+# And more!
+```
+
+### **Configuration**
+
+```bash
+# Set API keys
+claii config set key openai your_api_key
+
+# Set models
+claii config set model ollama llama3
+
+# View configuration
+claii config get-all
+```
+
+## **Plugin System**
+
+CLAII includes a flexible plugin system for extending its functionality:
+
+### **Managing Plugins**
+
+```bash
+# List all available plugins
+claii system list-plugins
+
+# Enable a plugin
+claii system enable-plugin plugin_name
+
+# Disable a plugin
+claii system disable-plugin plugin_name
+```
+
+### **Using Plugin Models**
+
+```bash
+# Use a model provided by a plugin
+claii chat "Your message" --tool plugin_model_name
+```
+
+### **Plugin Documentation**
+
+For more information on using and creating plugins, see:
+
+- [Plugin Quickstart Guide](claii/docs/PLUGINS_QUICKSTART.md)
+- [Full Plugin Documentation](claii/docs/plugins.md)
+- [Example Plugins](claii/docs/examples/plugins/)
+
+## **License**
+
+MIT
