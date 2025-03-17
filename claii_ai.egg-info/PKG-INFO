@@ -1,3 +1,35 @@
+Metadata-Version: 2.2
+Name: claii-ai
+Version: 0.1.0
+Summary: Command Line Artificial Intelligence Interface, an AI for your CLI.
+Home-page: https://github.com/YoussefAlkent/CLAII
+Author: YoussefAlkent
+Author-email: youssefalkent@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typer
+Requires-Dist: rich
+Requires-Dist: pytest
+Requires-Dist: pytest-mock
+Requires-Dist: langchain-core
+Requires-Dist: langchain-openai
+Requires-Dist: langchain-ollama
+Requires-Dist: langchain-deepseek
+Requires-Dist: langchain-anthropic
+Requires-Dist: langchain-mistralai
+Requires-Dist: langchain-google-genai
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: summary
+
 # **CLAII - Command Line Artificial Intelligence Interface**  
 
 Shell commands can be **frustrating to memorize and use**—**CLAII** is here to help!  
@@ -70,11 +102,11 @@ Download the latest **`.whl`** file from [GitHub Releases](https://github.com/Yo
 pip install path/to/claii-x.x.x-py3-none-any.whl
 ```
 
-### **📦 Method 2: Install from PyPI**  
-You can now download and install CLAII directly from pip! 
+### **📦 Method 2: Install from PyPI (Coming Soon)**  
+Once available, install CLAII directly from PyPI:  
 
 ```bash
-pip install claii-ai
+pip install claii
 ```
 
 ### **🎩 Method 3: Install from the AUR (Coming Soon)**  

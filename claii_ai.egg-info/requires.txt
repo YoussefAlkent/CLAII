@@ -1,0 +1,11 @@
+typer
+rich
+pytest
+pytest-mock
+langchain-core
+langchain-openai
+langchain-ollama
+langchain-deepseek
+langchain-anthropic
+langchain-mistralai
+langchain-google-genai
